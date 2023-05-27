@@ -1,0 +1,322 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1046{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang22 using System;\par
+using System.Collections.Generic;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+\par
+using System.IO; // => to file manipulation \par
+using System.Data.Common;\par
+\par
+namespace Sixth_Project\par
+\{\par
+    internal class Program\par
+    \{\par
+        //Create same variables\par
+        static string startDelimiter;\par
+        static string endDelimiter;\par
+        static string tagName;\par
+        static string tagBirth;\par
+        static string tagStreetName;\par
+        static string tagHouseNumber;\par
+\par
+        //Create a struct with name registration data\par
+        public struct dataRegistrationStruct\par
+            \{\par
+                //varible below\par
+                public string name;\par
+                public DateTime birthName;\par
+                public string streetName;\par
+                public UInt32 numberHouse;\par
+            \}\par
+            //Create enum\par
+            public enum result_and\par
+            \{\par
+                sucess = 0,\par
+                exit = 1,\par
+                excetion = 2\par
+            \}\par
+            //First method with void below\par
+            public static void showMessage(string message)\par
+            \{\par
+                Console.WriteLine(message);\par
+                Console.WriteLine("Press any key to continue");\par
+                Console.ReadKey();\par
+                Console.Clear();\par
+            \}\par
+            //Other method with mofifie 'ref' to be changed\par
+            public static result_and takeString(ref string myString, string message)\par
+            \{\par
+                result_and back;\par
+                Console.WriteLine(message);\par
+                string time = Console.ReadLine();\par
+\par
+                //Condition\par
+                if (time == "e" || time == "E")\par
+                \{\par
+                    back = result_and.exit;\par
+                \}\par
+                else\par
+                \{\par
+                    myString = time;\par
+                    back = result_and.sucess;\par
+                \}\par
+\par
+                Console.Clear();\par
+                return back;\par
+            \}\par
+            //Other method, now is to date\par
+            public static result_and takeDate(ref DateTime date, string message)\par
+            \{\par
+                //create a variable with name back\par
+                result_and back;\par
+\par
+                //repetition\par
+                do\par
+                \{\par
+\par
+                    //excess/exception treatment\par
+                    try\par
+                    \{\par
+                        Console.WriteLine(message);\par
+                        string time = Console.ReadLine();//=>take a temporary message\par
+\par
+                        //Loop\par
+                        if (time == "e" || time == "E")\par
+                        \{\par
+                            back = result_and.exit;\par
+                        \}\par
+                        else\par
+                        \{\par
+                            date = Convert.ToDateTime(time);\par
+                            back = result_and.sucess;\par
+                        \}\par
+                    \}\par
+                    catch (Exception and)\par
+                    \{\par
+                        //if there are any errors\par
+                        Console.WriteLine("EXCEPTION: " + and.Message);\par
+                        Console.WriteLine("Press any key to continue ...");\par
+                        Console.ReadKey();\par
+                        Console.Clear();\par
+                        back = result_and.excetion;\par
+                    \}\par
+                \} while (back == result_and.excetion);\par
+\par
+                Console.Clear();\par
+                return back;\par
+            \}\par
+            //Now method to number house with 'UInt32'\par
+            public static result_and takeUInt32(ref UInt32 numberUInt32, string message)\par
+            \{\par
+                //create a variable with name back\par
+                result_and back;\par
+\par
+                //repetition\par
+                do\par
+                \{\par
+\par
+                    //excess/exception treatment\par
+                    try\par
+                    \{\par
+                        Console.WriteLine(message);\par
+                        string time = Console.ReadLine();//=>take a temporary message\par
+\par
+                        //Loop\par
+                        if (time == "e" || time == "E")\par
+                        \{\par
+                            back = result_and.exit;\par
+                        \}\par
+                        else\par
+                        \{\par
+                            numberUInt32 = Convert.ToUInt32(time);\par
+                            back = result_and.sucess;\par
+                        \}\par
+                    \}\par
+                    catch (Exception and)\par
+                    \{\par
+                        //if there are any errors\par
+                        Console.WriteLine("EXCEPTION: " + and.Message);\par
+                        Console.WriteLine("Press any key to continue ...");\par
+                        Console.ReadKey();\par
+                        Console.Clear();\par
+                        back = result_and.excetion;\par
+                    \}\par
+                \} while (back == result_and.excetion);\par
+\par
+                Console.Clear();\par
+                return back;\par
+            \}\par
+            //Finally method to registration users\par
+            public static result_and registrationUser(ref List<dataRegistrationStruct> listUsers)\par
+            \{\par
+                dataRegistrationStruct registrationUser;\par
+                registrationUser.name = "";\par
+                registrationUser.birthName = new DateTime();\par
+                registrationUser.streetName = "";\par
+                registrationUser.numberHouse = 0;\par
+\par
+                //Loop\par
+                if (takeString(ref registrationUser.name, "What is your full name or type ' E ' to exit: ") == result_and.exit)\par
+                \{\par
+                    return result_and.exit;\par
+                \}\par
+                if (takeDate(ref registrationUser.birthName, "How old are you, please type DD/MM/AAAA or type ' E ' to exit: ") == result_and.exit)\par
+                \{\par
+                    return result_and.exit;\par
+                \}\par
+                if (takeString(ref registrationUser.streetName, "What is the name of your street or type ' E ' to exit: ") == result_and.exit)\par
+                \{\par
+                    return result_and.exit;\par
+                \}\par
+                if (takeUInt32(ref registrationUser.numberHouse, "What is the number of your house or type ' E ' to exit: ") == result_and.exit)\par
+                \{\par
+                    return result_and.exit;\par
+                \}\par
+                //to salve\par
+                listUsers.Add(registrationUser);\par
+\par
+                //If you manage to register the users\par
+                return result_and.sucess;\par
+            \}\par
+\par
+            //methods below will go records\par
+            public static void recordData(string way, List<dataRegistrationStruct> listUsers) \par
+            \{\par
+                //exception treatment\par
+                try \par
+                \{\par
+                    //Create a variable below, that will to be treatment ' listUser ' abouve\par
+                    string fileContent = "";\par
+\par
+                    foreach (dataRegistrationStruct registration in listUsers)\par
+                    \{\par
+                        fileContent += startDelimiter + "\\r\\n";\par
+                        fileContent += tagName + registration.name + "\\r\\n";\par
+                        fileContent += tagBirth + registration.birthName.ToString("dd/MM/yyyy") + "\\r\\n";\par
+                        fileContent += tagStreetName + registration.streetName + "\\r\\n";\par
+                        fileContent += tagHouseNumber + registration.numberHouse + "\\r\\n";\par
+                        fileContent += endDelimiter + "\\r\\n";\par
+                    \}\par
+\par
+                    //to salve datas abouve\par
+                    File.WriteAllText(way, fileContent);\par
+                \}\par
+                catch(Exception and) \par
+                \{\par
+                Console.WriteLine("EXCEPTION: " + and.Message);\par
+                \}\par
+            \}\par
+\par
+            //Other method to go load datas with yours parameters\par
+            public static void datasLoad(string way, List<dataRegistrationStruct> listUsers) \par
+            \{\par
+                //Exception treatment\par
+                try \par
+                \{\par
+                    //condition\par
+                    if(File.Exists(way)) \par
+                    \{\par
+                        //create some variables together a variable with array\par
+                        string[] fileContent = File.ReadAllLines(way);\par
+                        dataRegistrationStruct dataRegistration;\par
+                        dataRegistration.name = ""; // => just so the compiler doen\'b4t complain\par
+                        dataRegistration.birthName = new DateTime();\par
+                        dataRegistration.streetName = "";\par
+                        dataRegistration.numberHouse = 0;\par
+\par
+                        //call loop\par
+                        foreach (string line in fileContent) \par
+                        \{\par
+                            //condition\par
+                            if (line.Contains(startDelimiter)) \par
+                            \{\par
+                                continue; // => you don\'b4t want to do anything, and go on to the next one.\par
+                            \}\par
+                            if (line.Contains(endDelimiter))\par
+                            \{\par
+                                listUsers.Add(dataRegistration);\par
+                            \}\par
+                            if (line.Contains(tagName)) \par
+                            \{\par
+                                dataRegistration.name = line.Replace(tagName, "");\par
+                            \}\par
+                            if (line.Contains(tagBirth))\par
+                            \{\par
+                                dataRegistration.birthName = Convert.ToDateTime(line.Replace(tagBirth, ""));\par
+                            \}\par
+                            if (line.Contains(tagStreetName))\par
+                            \{\par
+                                dataRegistration.streetName = line.Replace(tagStreetName, "");\par
+                            \}\par
+                            if (line.Contains(tagHouseNumber))\par
+                            \{\par
+                                dataRegistration.numberHouse = Convert.ToUInt32(line.Replace(tagHouseNumber, ""));\par
+                            \}\par
+                        \}\par
+                    \}\par
+                \}\par
+                catch (Exception and) \par
+                \{\par
+                    Console.WriteLine("EXCEPTION: " + and.Message);\par
+                \}\par
+            \}\par
+\par
+            static void Main(string[] args) // => this is method ' Main '\par
+            \{\par
+\par
+            //Sixth project\par
+            List<dataRegistrationStruct> listUsers = new List<dataRegistrationStruct>();\par
+\par
+            //variable\par
+            string option = "";\par
+            startDelimiter = " ##### START ##### ";\par
+            endDelimiter = " ##### END ##### ";\par
+            tagName = " Name: ";\par
+            tagBirth = " Birth Date: ";\par
+            tagStreetName = " Street Name: ";\par
+            tagHouseNumber = " House Number: ";\par
+\par
+            //Create a variable to records ours users registration\par
+            string fileWay = @"fileBase.txt";\par
+\par
+            //create method to load ours full datas\par
+            datasLoad(fileWay, listUsers); // => 15:35 minutes errors ' ref listUsers '\par
+\par
+            //Loop/Repetion\par
+            do\par
+            \{\par
+                Console.WriteLine("Type R to registration new user or E to exit: ");\par
+                option = Console.ReadKey(true).KeyChar.ToString().ToUpper();\par
+\par
+                //Condition\par
+                if (option == "R")\par
+                \{\par
+                    //Registration a new user\par
+                    if(registrationUser(ref listUsers) == result_and.sucess) \par
+                    \{\par
+                        recordData(fileWay, listUsers); // => a errors\par
+                    \}\par
+\par
+                \}\par
+                else if (option == "E")\par
+                \{\par
+                    //Exit application\par
+                    showMessage("Closing the program ...");\par
+\par
+                \}\par
+                else\par
+                \{\par
+                    //Option unknown\par
+                    showMessage("Option unknown ...");\par
+\par
+                \}\par
+\par
+            \}\par
+            while (option != "E");\par
+            \}\par
+    \}\par
+\}\par
+}
+ 
